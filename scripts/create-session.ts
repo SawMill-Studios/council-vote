@@ -5,13 +5,15 @@ loadLocalEnv();
 const slug = flag("slug");
 const title = flag("title");
 if (!slug || !title) {
-  fail("Usage: npm run create-session -- --slug my-session --title \"My council\" [--pm \"PM skills\"] [--channel \"Where to hunt\"] [--prompt \"Opening line\"] [--capture-moves \"Next three moves\"]");
+  fail("Usage: npm run create-session -- --slug my-session --title \"My council\" [--template product-council] [--pm \"PM skills\"] [--channel \"Where to hunt\"] [--prompt \"Opening line\"] [--capture-moves \"Next three moves\"]");
 }
 
 const creatorKey = process.env.COUNCIL_CREATOR_KEY ?? "";
 if (!creatorKey) fail("Set COUNCIL_CREATOR_KEY. It creates sessions. It is not an admin key.");
 
 const body: Record<string, unknown> = { slug, title };
+const template = flag("template");
+if (template) body.template = template;
 const pm = flag("pm");
 const channel = flag("channel");
 const testing = flag("testing");

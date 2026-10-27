@@ -313,7 +313,7 @@ test("export requires the admin key and includes names, votes, and coordinates",
   assert.match(String(csv.body), /0\.2/);
   const html = await call(store, "/api/council/export?session=test&format=html&admin=test-admin-key");
   assert.match(String(html.body), /Lines worth quoting/);
-  assert.match(String(html.body), /Darren&#39;s next three moves/);
+  assert.match(String(html.body), /Your next three moves/);
   await postSticky(store, { participantId: PID, column: "designer", text: "Ships UI", clientId: "clientdesig1" });
   const kept = await call(store, "/api/council/state?session=test");
   assert.ok(kept.body.stickies.some((sticky: { column: string; text: string }) => sticky.column === "designer" && sticky.text === "Ships UI"));

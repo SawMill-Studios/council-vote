@@ -4,7 +4,7 @@
 @font-face{font-family:"Inter";src:url("./fonts/inter-latin-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
 @font-face{font-family:"Inter";src:url("./fonts/inter-latin-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
 @font-face{font-family:"Inter";src:url("./fonts/inter-latin-800.woff2") format("woff2");font-weight:800;font-style:normal;font-display:swap}
-/* EC6 council board: shared tokens + components. Lift freely. */
+/* Council board: shared tokens + components. Lift freely. */
 html.council-page{
   /* ground */
   --ground:#F2E2C4;          /* kraft */
@@ -240,7 +240,7 @@ html.council-page .sheet{max-width:720px;margin:0 auto;padding:32px 20px 64px}
 html.council-page .sheet h1{font-family:var(--f-hand);font-size:56px;line-height:1;margin:8px 0 12px}
 html.council-page .sheet p,html.council-page .sheet li{font-size:18px;line-height:1.45;margin:12px 0}
 html.council-page .sheet label{display:block;font-weight:700;margin:16px 0 6px}
-html.council-page .sheet input,html.council-page .sheet textarea{width:100%;min-height:48px;border:2px solid var(--ink);border-radius:10px;padding:10px 12px;font:600 16px/1.3 var(--f-text);background:var(--paper);color:var(--ink)}
+html.council-page .sheet input,html.council-page .sheet textarea,html.council-page .sheet select{width:100%;min-height:48px;border:2px solid var(--ink);border-radius:10px;padding:10px 12px;font:600 16px/1.3 var(--f-text);background:var(--paper);color:var(--ink)}
 html.council-page .sheet textarea{min-height:96px}
 html.council-page .sheet .btn{display:inline-block;margin-top:18px;text-decoration:none}
 html.council-page .sheet a:not(.btn){color:var(--teal-ink)}

@@ -32,7 +32,7 @@ Without Netlify credentials, board data is written under `data/local/council`. T
 | `COUNCIL_NETWORK_RATE_LIMIT` | Optional | Writes per minute from one IP. Default 400. |
 | `COUNCIL_BASE_URL` | Your laptop, for the commands below | Site origin, such as `https://your-site.netlify.app`. The deployed site does not read this. |
 
-There is no site-wide admin key and no fixed list of sessions. Leave a column blank when you create a session and the board starts from today's template (PM skills, Where to hunt, and the standard beats). The capture sheet heading in that template is the original council's wording until you replace it.
+There is no site-wide admin key and no fixed list of sessions. A new session starts from the generic board unless you ask for another template.
 
 ## Deploy to Netlify
 
@@ -50,11 +50,12 @@ You can do this in the browser. You do not need the command line.
 3. Paste the creator key. It is sent only to create the session. The page does not save it.
 4. Choose a slug. Use lowercase letters, numbers, and hyphens, up to 40 characters. Example: `tommy-2026-11-04`. The slug becomes part of the link and cannot be changed.
 5. Type a title people will recognize, such as `Tuesday council`.
-6. Optional: rename the two hiring columns, replace the opening line, or replace the capture sheet's closing heading. Leave a box blank to keep the template.
-7. Press **Create session**.
-8. Copy the admin key before you leave the page. It is shown once. The server stores only a hash of it, so it cannot be looked up later. If you lose it, create a new session.
-9. Open the **admin** link once, on the presenter laptop. The site moves the key into the address-bar hash (`#admin=...`) so the key is not kept in the page itself. Bookmark that presenter page after it loads, or paste the key again from your notes.
-10. Put the presenter page on the projector. Share the **join** link, or let people scan the QR code on the screen. Phones do not need an account.
+6. Leave **Starting copy** on Generic. Choose **Product council** only if you want that hiring-and-testing script, including its original capture heading.
+7. Optional: rename the two hiring columns, replace the opening line, or replace the capture sheet's closing heading. Leave a box blank to keep the template you chose.
+8. Press **Create session**.
+9. Copy the admin key before you leave the page. It is shown once. The server stores only a hash of it, so it cannot be looked up later. If you lose it, create a new session.
+10. Open the **admin** link once, on the presenter laptop. The site moves the key into the address-bar hash (`#admin=...`) so the key is not kept in the page itself. Bookmark that presenter page after it loads, or paste the key again from your notes.
+11. Put the presenter page on the projector. Share the **join** link, or let people scan the QR code on the screen. Phones do not need an account.
 
 The creator key can also list session titles and slugs. It cannot reset, reveal, or export a board.
 
@@ -66,7 +67,19 @@ On a machine that has this repo and Node 22, put the creator key and the site or
 npm run create-session -- --slug tommy-2026-11-04 --title "Tuesday council"
 ```
 
-Optional flags: `--pm`, `--channel`, `--testing`, `--harvest`, `--prompt`, `--capture-moves`.
+Optional flags: `--template product-council`, `--pm`, `--channel`, `--testing`, `--harvest`, `--prompt`, `--capture-moves`.
+
+### Starting copy
+
+With no template, the board is generic: four beats, columns named PM skills and Where to hunt, and a capture sheet that ends with "Your next three moves". That copy does not name a person or a company.
+
+The product-council template is the hiring-and-testing script. Ask for it in the JSON body with `"template": "product-council"`, or:
+
+```bash
+npm run create-session -- --slug tommy-2026-11-04 --title "Tuesday council" --template product-council
+```
+
+Any other template name is rejected. Column names, the opening line, and `--capture-moves` still override the template you pick.
 
 The command prints JSON. It includes:
 

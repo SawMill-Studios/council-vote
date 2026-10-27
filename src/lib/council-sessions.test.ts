@@ -171,6 +171,27 @@ test("export uses the session copy and the other key is refused", async () => {
   assert.match(csv.headers.get("content-disposition") ?? "", /council-alpha\.csv/);
 });
 
+test("a session created with no content has no Darren string", async () => {
+  const store = memoryCouncilStore();
+  const made = await create(store, { slug: "plain", title: "Tuesday council" });
+  assert.equal(made.status, 201);
+  const stored = JSON.parse((await store.get("registry/plain")) ?? "{}") as { content: unknown };
+  assert.equal(JSON.stringify(stored.content).includes("Darren"), false);
+  assert.equal(JSON.stringify(made.payload).includes("Darren"), false);
+  const state = await call(store, "/api/council/state?session=plain");
+  const board = (await state.json()) as { content: unknown };
+  assert.equal(JSON.stringify(board.content).includes("Darren"), false);
+  const html = await call(store, `/api/council/export?session=plain&format=html&admin=${made.payload.adminKey}`);
+  assert.equal((await html.text()).includes("Darren"), false);
+
+  const named = await create(store, { slug: "scripted", title: "Tuesday council", template: "product-council" });
+  assert.equal(named.status, 201);
+  const script = JSON.parse((await store.get("registry/scripted")) ?? "{}") as { content: { capture: { moves: string } } };
+  assert.match(script.content.capture.moves, /Darren/);
+  const unknown = await create(store, { slug: "nope", title: "Nope", template: "other" });
+  assert.equal(unknown.status, 400);
+});
+
 test("a missing host falls back to localhost", () => {
   assert.equal(requestOrigin(null, null), "http://localhost:3000");
   assert.equal(requestOrigin("not a host", null), "http://localhost:3000");
@@ -216,6 +237,14 @@ test("the create-session CLI calls the deployed API", async () => {
     const payload = JSON.parse(created.stdout) as { slug: string; adminKey: string; content: { columns: { pm: string } } };
     assert.equal(payload.slug, "cli-room");
     assert.equal(payload.content.columns.pm, "CLI skills");
+    assert.equal(created.stdout.includes("Darren"), false);
+    const scripted = await runCli(
+      "scripts/create-session.ts",
+      ["--slug", "cli-script", "--title", "Scripted council", "--template", "product-council"],
+      { COUNCIL_BASE_URL: base, COUNCIL_CREATOR_KEY: CREATOR },
+    );
+    assert.equal(scripted.code, 0, scripted.stderr);
+    assert.match(scripted.stdout, /Darren/);
     const listed = await runCli("scripts/list-sessions.ts", [], { COUNCIL_BASE_URL: base, COUNCIL_CREATOR_KEY: CREATOR });
     assert.equal(listed.code, 0, listed.stderr);
     assert.match(listed.stdout, /cli-room/);

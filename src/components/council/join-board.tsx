@@ -198,7 +198,7 @@ export function JoinBoard({ sessionId, content }: { sessionId: string; content?:
           outcome = writeOutcome(response.status);
           if (response.ok && item.kind === "sticky") {
             const sticky = body as { sticky?: { late?: boolean } };
-            if (sticky.sticky?.late) setMessage("Darren has moved on, but your sticky made it to the wall.");
+            if (sticky.sticky?.late) setMessage("The room has moved on, but your sticky made it to the wall.");
           }
           if (!response.ok && body.error === "voting closed") setError("Voting closed.");
         } catch {
@@ -263,7 +263,7 @@ export function JoinBoard({ sessionId, content }: { sessionId: string; content?:
         setError(body.error === "vote limit" ? "Out of dots in that group. Undo one first." : friendly(body.error ?? "Could not post"));
         return false;
       }
-      if (body.sticky?.late) setMessage("Darren has moved on, but your sticky made it to the wall.");
+      if (body.sticky?.late) setMessage("The room has moved on, but your sticky made it to the wall.");
       else if (item.kind === "sticky") setMessage("Posted. It is on the big screen now.");
       return true;
     } catch {
@@ -397,7 +397,7 @@ export function JoinBoard({ sessionId, content }: { sessionId: string; content?:
   if (!named) {
     return (
       <main className="phone">
-        <p className="ph-beat">Live · EC6</p>
+        <p className="ph-beat">Live · {content?.shortName || "Council"}</p>
         <h1 className="ph-title">What should we call you?</h1>
         <p className="ph-prompt">Hiring and testing stickies stay anonymous. Your name shows on a harvest offer.</p>
         <label className="ph-prompt" htmlFor="council-name">Name</label>
@@ -419,7 +419,7 @@ export function JoinBoard({ sessionId, content }: { sessionId: string; content?:
       <div className="ph-top">
         <span>
           <span className="pulse" style={{ display: "inline-block", width: 10, height: 10, marginRight: 8 }} />
-          Live · {content?.shortName || "EC6"}
+          Live · {content?.shortName || "Council"}
         </span>
         <button className="ph-name" type="button" onClick={() => setNamed(false)} aria-label="Your name, tap to edit">
           {name || "Anonymous"}
@@ -446,7 +446,7 @@ export function JoinBoard({ sessionId, content }: { sessionId: string; content?:
         <>
           <p className="ph-beat">Framing</p>
           <h1 className="ph-title">You&apos;re in.</h1>
-          <p className="ph-prompt">{content?.waiting || "Darren is framing. Your first prompt is coming. This phone will follow the big screen."}</p>
+          <p className="ph-prompt">{content?.waiting || "The room is framing. Your first prompt is coming. This phone will follow the big screen."}</p>
         </>
       ) : null}
 

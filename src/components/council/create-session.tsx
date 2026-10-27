@@ -19,6 +19,7 @@ export function CreateSession() {
   const [channel, setChannel] = useState("");
   const [prompt, setPrompt] = useState("");
   const [captureMoves, setCaptureMoves] = useState("");
+  const [template, setTemplate] = useState("");
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const [created, setCreated] = useState<Created | null>(null);
@@ -34,6 +35,7 @@ export function CreateSession() {
     if (Object.keys(columns).length > 0) body.columns = columns;
     if (prompt.trim()) body.beats = [{ n: 1, prompt: prompt.trim() }];
     if (captureMoves.trim()) body.captureMoves = captureMoves.trim();
+    if (template) body.template = template;
     try {
       const response = await fetch("/api/council/sessions", {
         method: "POST",
@@ -100,6 +102,12 @@ export function CreateSession() {
         required
       />
       <p>Lowercase letters, numbers, and hyphens. This becomes part of the link.</p>
+      <label htmlFor="template">Starting copy</label>
+      <select id="template" value={template} onChange={(event) => setTemplate(event.target.value)}>
+        <option value="">Generic</option>
+        <option value="product-council">Product council</option>
+      </select>
+      <p>Generic works for any room. Product council is the hiring-and-testing script, including its original capture heading.</p>
       <label htmlFor="title">Title</label>
       <input id="title" value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Tuesday council" required />
       <label htmlFor="pm">First column name</label>

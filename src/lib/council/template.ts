@@ -1,4 +1,6 @@
-/** Today's council, copied into each new session. A session may replace any of these strings. */
+/** Board copy for a new session. `default` is generic. `product-council` is an opt-in script. */
+
+export const BOARD_TEMPLATES = ["default", "product-council"] as const;
 
 export interface BeatCopy {
   n: 1 | 2 | 3 | 4;
@@ -44,7 +46,73 @@ export interface BoardCopy {
   capture: CaptureCopy;
 }
 
-export function defaultBoardCopy(title = "EC6 council"): BoardCopy {
+/** Generic board. No person or company names. A session may replace any of these strings. */
+export function defaultBoardCopy(title = "Council"): BoardCopy {
+  return {
+    title,
+    shortName: [...title].slice(0, 24).join("") || "Council",
+    waiting: "The room is framing. Your first prompt is coming. This phone will follow the big screen.",
+    columns: {
+      pm: "PM skills",
+      channel: "Where to hunt",
+      testing: "Testing",
+      harvest: "Harvest",
+    },
+    beats: [
+      {
+        n: 1,
+        kicker: "Beat 1 of 4 · Framing",
+        title: "Set the frame.",
+        prompt: "What this room is here to decide",
+        notes: "Walk the room through the shape of the problem. Name the two questions the wall will ask.",
+      },
+      {
+        n: 2,
+        kicker: "Beat 2 of 4 · Hiring wall",
+        title: "Hire for what? Hunt where?",
+        prompt: "2 dots on skills you would hire for tomorrow. 1 dot on the channel you would try first.",
+        notes:
+          "Open the vote with V. Two skill dots, and both may land on one sticky. One hunt dot. R re-ranks and numbers the top three. M merges two stickies. Shift+M splits the selected stack.",
+      },
+      {
+        n: 3,
+        kicker: "Beat 3 of 4 · Testing 2x2",
+        title: "How do lean teams actually test?",
+        prompt: "Place a today dot, then a 1 year dot. Be honest, not the board deck.",
+        notes:
+          "R hides the arrows so the room sees today before the year ahead. The room-average arrow appears once three people have placed both dots.",
+      },
+      {
+        n: 4,
+        kicker: "Beat 4 of 4 · Harvest",
+        title: "I'll give you ___",
+        prompt: "An intro, a channel, a template, or 20 minutes on the phone.",
+        notes: "Names show on offers. E downloads the capture sheet, JSON, and CSV.",
+      },
+    ],
+    framing: {
+      leadsTitle: "Leads",
+      leadsBody: "The work that needs a lead",
+      middleTitle: "The middle",
+      middleBody: "What sits between the two ends",
+      buildersTitle: "Builders",
+      buildersBody: "The work that needs a maker",
+      gap1Title: "Gap 1 · Hiring",
+      gap1Body: "Where the room is short on people.",
+      gap2Title: "Gap 2 · Testing",
+      gap2Body: "Where the room ships more than it can validate.",
+    },
+    capture: {
+      heading: "Capture sheet",
+      sub: "Scribe: ____________________ · Photograph both walls before they come down.",
+      pmHeading: "PM skill cluster",
+      moves: "Your next three moves",
+    },
+  };
+}
+
+/** Opt-in script from the October product council. Ask for it with template "product-council". */
+export function productCouncilCopy(title = "EC6 council"): BoardCopy {
   const copy: BoardCopy = {
     title,
     shortName: "EC6",
@@ -109,4 +177,10 @@ export function defaultBoardCopy(title = "EC6 council"): BoardCopy {
   };
   if (title !== "EC6 council") copy.shortName = [...title].slice(0, 24).join("");
   return copy;
+}
+
+export function boardCopy(template: string | undefined, title: string): BoardCopy | { error: string; status: number } {
+  if (template === undefined || template === "" || template === "default") return defaultBoardCopy(title);
+  if (template === "product-council") return productCouncilCopy(title);
+  return { error: "unknown template", status: 400 };
 }

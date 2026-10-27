@@ -1243,6 +1243,7 @@ async function catalog(request: Request, deps: CouncilDeps, method: string): Pro
       shortName: record.content.shortName,
       columns: record.content.columns,
       beats: record.content.beats.map(({ n, kicker, title, prompt }) => ({ n, kicker, title, prompt })),
+      capture: { moves: record.content.capture.moves },
     },
   });
 }

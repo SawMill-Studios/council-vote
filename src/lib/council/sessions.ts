@@ -1,6 +1,6 @@
 import { timingSafeEqualText } from "../env.ts";
 import type { CouncilStore } from "./store.ts";
-import { defaultBoardCopy, type BeatCopy, type BoardCopy } from "./template.ts";
+import { boardCopy, type BeatCopy, type BoardCopy } from "./template.ts";
 import { parseSessionId, plainText } from "./text.ts";
 
 export interface SessionRecord {
@@ -62,7 +62,10 @@ export async function createSessionRecord(
   if (!title.ok) {
     return { error: title.error === "text is empty" || title.error === "text is required" ? "Add a title." : title.error, status: 400 };
   }
-  const content = applyOverrides(defaultBoardCopy(title.text), data);
+  if (data.template !== undefined && typeof data.template !== "string") return { error: "unknown template", status: 400 };
+  const base = boardCopy(typeof data.template === "string" ? data.template : undefined, title.text);
+  if ("error" in base) return base;
+  const content = applyOverrides(base, data);
   if ("error" in content) return content;
   const adminKey = newAdminKey();
   const record: SessionRecord = {

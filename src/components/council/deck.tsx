@@ -37,14 +37,14 @@ interface Board {
 }
 
 const BEATS = [
-  { n: 1, kicker: "Beat 1 of 4 · Framing", title: "The barbell is working.", prompt: "Strategy, shaping, architecture, coaching, hiring" },
+  { n: 1, kicker: "Beat 1 of 4 · Framing", title: "Set the frame.", prompt: "What this room is here to decide" },
   { n: 2, kicker: "Beat 2 of 4 · Hiring wall", title: "Hire for what? Hunt where?", prompt: "2 dots on skills you would hire for tomorrow. 1 dot on the channel you would try first." },
   { n: 3, kicker: "Beat 3 of 4 · Testing 2x2", title: "How do lean teams actually test?", prompt: "Place a today dot, then a 1 year dot. Be honest, not the board deck." },
   { n: 4, kicker: "Beat 4 of 4 · Harvest", title: "I'll give you ___", prompt: "An intro, a channel, a template, or 20 minutes on the phone." },
 ];
 
 const NOTES = [
-  "Leads on one end, builders on the other, agents in the middle. Two gaps: hiring and testing. Do not say: anything about buyouts, today's announcement beyond \"return-to-office requirement,\" headcount or layoff numbers, the Warner deal, or any candidate's name. If someone asks about today's news: Fair question, but not for this half hour. Ask me at lunch.",
+  "Walk the room through the shape of the problem. Name the two questions the wall will ask.",
   "Open the vote with V. Two skill dots, and both may land on one sticky. One hunt dot. R re-ranks and numbers the top three. M merges two stickies. Shift+M splits the selected stack.",
   "R hides the arrows so the room sees today before the year ahead. The room-average arrow appears once three people have placed both dots.",
   "Names show on offers. E downloads the capture sheet, JSON, and CSV.",
@@ -636,24 +636,24 @@ function Framing({ copy }: { copy?: BoardCopy["framing"] }) {
       <div className="barbell">
         <div className="plate">
           <h3 className="hand" style={{ fontSize: 40 }}>{copy?.leadsTitle ?? "Leads"}</h3>
-          <p className="copy">{copy?.leadsBody ?? "Strategy, coaching, hiring, org design"}</p>
+          <p className="copy">{copy?.leadsBody ?? "The work that needs a lead"}</p>
         </div>
         <div className="rod">
-          <h3 className="hand" style={{ fontSize: 36, color: "var(--teal-ink)" }}>{copy?.middleTitle ?? "Agents in the middle"}</h3>
-          <p className="copy">{copy?.middleBody ?? "AI does the old middle-management work"}</p>
+          <h3 className="hand" style={{ fontSize: 36, color: "var(--teal-ink)" }}>{copy?.middleTitle ?? "The middle"}</h3>
+          <p className="copy">{copy?.middleBody ?? "What sits between the two ends"}</p>
         </div>
         <div className="plate">
           <h3 className="hand" style={{ fontSize: 40 }}>{copy?.buildersTitle ?? "Builders"}</h3>
-          <p className="copy">{copy?.buildersBody ?? "Cross-functional makers who ship to production"}</p>
+          <p className="copy">{copy?.buildersBody ?? "The work that needs a maker"}</p>
         </div>
       </div>
       <div className="gap">
         <h4 className="hand" style={{ fontSize: 32 }}>{copy?.gap1Title ?? "Gap 1 · Hiring"}</h4>
-        <p className="copy">{copy?.gap1Body ?? "Brand headlines, return to office, big-tech pay. Recruiters don't know where to hunt yet."}</p>
+        <p className="copy">{copy?.gap1Body ?? "Where the room is short on people."}</p>
       </div>
       <div className="gap">
         <h4 className="hand" style={{ fontSize: 32 }}>{copy?.gap2Title ?? "Gap 2 · Testing"}</h4>
-        <p className="copy">{copy?.gap2Body ?? "We ship more than we can validate. No research lead, no A/B owner."}</p>
+        <p className="copy">{copy?.gap2Body ?? "Where the room ships more than it can validate."}</p>
       </div>
     </div>
   );
