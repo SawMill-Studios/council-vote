@@ -164,8 +164,8 @@ test("export uses the session copy and the other key is refused", async () => {
   const html = await call(store, `/api/council/export?session=alpha&format=html&admin=${made.payload.adminKey}`);
   const sheet = await html.text();
   assert.equal(html.status, 200);
-  assert.match(sheet, /Tommy's next three moves/);
-  assert.equal(sheet.includes("Darren's next three moves"), false);
+  assert.match(sheet, /Tommy&#39;s next three moves/);
+  assert.equal(sheet.includes("Darren"), false);
   assert.match(html.headers.get("content-disposition") ?? "", /capture-sheet-alpha\.html/);
   const csv = await call(store, `/api/council/export?session=alpha&format=csv&admin=${made.payload.adminKey}`);
   assert.match(csv.headers.get("content-disposition") ?? "", /council-alpha\.csv/);
