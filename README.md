@@ -6,6 +6,8 @@ Each session has its own admin key. That key advances the beats, reveals votes, 
 
 This app stores boards in its own Netlify Blobs store, `council-vote`. It does not read or write Mission Control's store, and it does not import anyone's previous council.
 
+`@netlify/blobs` is pinned to 11.1.3. In 11.1.7, `get()` hangs inside Netlify functions until the request 504s (`list` still returns). Do not bump that package without a production smoke test that reads a blob.
+
 ## Local development
 
 You need Node 22.
